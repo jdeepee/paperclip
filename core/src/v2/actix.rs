@@ -10,6 +10,9 @@ use actix_web::{
     HttpRequest, HttpResponse, Responder,
 };
 
+#[cfg(feature = "serde_qs")]
+use serde_qs::actix::QsQuery;
+
 use std::collections::BTreeMap;
 use std::future::Future;
 
@@ -319,6 +322,8 @@ impl<T: Apiv2Schema> Apiv2Schema for Form<T> {
 impl_param_extractor!(Path<T> => Path);
 impl_param_extractor!(Query<T> => Query);
 impl_param_extractor!(Form<T> => FormData);
+#[cfg(feature = "serde_qs")]
+impl_param_extractor!(QsQuery<T> => QsQuery);
 
 macro_rules! impl_path_tuple ({ $($ty:ident),+ } => {
     #[cfg(feature = "nightly")]
